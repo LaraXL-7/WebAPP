@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Nueva Herramienta</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/nuevo_material.css') }}">
+    <style>
+        /* Estilo base para el campo de vida útil */
+        select {
+            border: 2px solid #ccc;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 10px;
+        }
+
+        /* Estilos para el semáforo */
+        .semaforo {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            height: 40px; /* Ajusta según sea necesario */
+            margin-top: 10px;
+        }
+
+        .luz {
+            width: 30px; /* Ajusta según sea necesario */
+            height: 30px; /* Ajusta según sea necesario */
+            border-radius: 50%;
+            margin: 0 5px;
+            opacity: 0.2; /* Luz apagada inicialmente */
+            transition: opacity 0.3s; /* Transición suave */
+        }
+
+        .verde {
+            background-color: green;
+        }
+
+        .amarillo {
+            background-color: yellow;
+        }
+
+        .naranja {
+            background-color: orange;
+        }
+
+        .rojo {
+            background-color: red;
+        }
+
+        .luz.encendida {
+            opacity: 1; /* Luz encendida */
+        }
+    </style>
+</head>
+<body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const estadoSelect = document.getElementById('vida_util');
+        const luces = document.querySelectorAll('.luz');
+
+        estadoSelect.addEventListener('change', function() {
+            const estado = this.value;
+            luces.forEach(luz => luz.classList.remove('encendida'));
+
+            switch (estado) {
+                case 'bueno':
+                    document.querySelector('.verde').classList.add('encendida');
+                    break;
+                case 'normal':
+                    document.querySelector('.amarillo').classList.add('encendida');
+                    break;
+                case 'reparacion':
+                    document.querySelector('.naranja').classList.add('encendida');
+                    break;
+                case 'fuera':
+                    document.querySelector('.rojo').classList.add('encendida');
+                    break;
+            }
+        });
+
+        // Inicializa el semáforo al cargar la página
+        estadoSelect.dispatchEvent(new Event('change'));
+    });
+</script>
+
+<div class="container">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h3>Inventario</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="{{ url_for('admin_dashboard') }}">Dashboard Principal</a></li>
+            <li><a href="{{ url_for('material_dashboard') }}">Panel de Material</a></li>
+            <li><a href="{{ url_for('herramienta_dashboard') }}">Panel de Herramientas</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header>
+            <h2>Agregar Nueva Herramienta</h2>
+        </header>
+        <div class="form-container">
+            <form method="POST" class="material-form">
+                <div class="input-group">
+                    <label for="nombre">Nombre de la Herramienta</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Nombre de la Herramienta" required>
+                </div>
+                <div class="input-group">
+                    <label for="vida_util">Estado del Producto</label>
+                    <select id="vida_util" name="vida_util" required>
+                        <option value="">Selecciona</option>
+                        <option value="bueno">Bueno</option>
+                        <option value="normal">Normal</option>
+                        <option value="reparacion">En reparación</option>
+                        <option value="fuera">Fuera de servicio</option>
+                    </select>
+                    <div class="semaforo">
+                        <div class="luz verde"></div>
+                        <div class="luz naranja"></div>
+                        <div class="luz amarillo"></div>
+                        <div class="luz rojo"></div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="unidad">Unidad de Medida</label>
+                    <input type="text" id="unidad" name="unidad" placeholder="pieza, metro, litro, etc." required>
+                </div>
+                <div class="input-group">
+                    <label for="cantidad">Cantidad</label>
+                    <input type="number" id="cantidad" name="cantidad" required>
+                </div>
+
+                <!-- Campo Proyecto con select -->
+                <div class="input-group">
+                    <label for="proyecto">Proyecto</label>
+                    <select id="proyecto" name="proyecto" required>
+                        <option value="">Selecciona un Proyecto</option>
+                        <option value="INM-001">INM-001</option>
+                        <option value="INM-002">INM-002</option>
+                        <option value="INM-003">INM-003</option>
+                        <option value="INM-004">INM-004</option>
+                        <option value="INM-005">INM-005</option>
+                        <option value="INM-006">INM-006</option>
+                        <option value="INM-007">INM-007</option>
+                        <option value="INM-008">INM-008</option>
+                        <option value="INM-009">INM-009</option>
+                        <option value="INM-010">INM-010</option>
+                    </select>
+                </div>
+
+                <!-- Nuevo campo Área de Colocación -->
+                <div class="input-group">
+                    <label for="area_colocacion">Área de Colocación</label>
+                    <input type="text" id="area_colocacion" name="area_colocacion" placeholder="Área de colocación de la herramienta" required>
+                </div>
+
+                <!-- Campo para Persona Asignada -->
+                <div class="input-group">
+                    <label for="persona_asignada">Persona Asignada</label>
+                    <input type="text" id="persona_asignada" name="persona_asignada" placeholder="Nombre de la persona asignada" required>
+                </div>
+
+                <button type="submit" class="btn-submit">Agregar Herramienta</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

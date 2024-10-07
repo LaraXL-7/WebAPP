@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icons/favicon.ico') }}"/>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+    <!-- Material Iconic Font -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='fonts/iconic/css/material-design-iconic-font.min.css') }}">
+    <!-- Animations -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/animate/animate.css') }}">
+    <!-- Hamburgers -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/css-hamburgers/hamburgers.min.css') }}">
+    <!-- Animsition -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/animsition/css/animsition.min.css') }}">
+    <!-- Select2 -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/select2/select2.min.css') }}">
+    <!-- Daterangepicker -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/daterangepicker/daterangepicker.css') }}">
+    <!-- Utility CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/util.css') }}">
+    <!-- Custom Login CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
+    <title>Login</title>
+</head>
+<body>
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <!-- Flask Form Handling -->
+                <form class="login100-form validate-form" method="POST" action="{{ url_for('login') }}">
+                    <span class="login100-form-title p-b-26">
+                        Bienvenido
+                    </span>
+                    <span class="login100-form-title p-b-48">
+                        <img src="{{ url_for('static', filename='images/Logo-DIE1.png') }}" alt="Logo de la Empresa" style="width: 100px; height: auto;">
+                    </span>
+                    <div class="wrap-input100 validate-input" data-validate="Valid username is required">
+                        <input class="input100" type="text" name="username" required placeholder="Usuario">
+                    </div>
+                    
+                    <div class="wrap-input100 validate-input" data-validate="Password is required">
+                        <span class="btn-show-pass">
+                            <i class="zmdi zmdi-eye"></i>
+                        </span>
+                        <input class="input100" type="password" name="password" required placeholder="Contraseña">
+                    </div>
+                    
+
+                    <div class="container-login100-form-btn">
+                        <div class="wrap-login100-form-btn">
+                            <div class="login100-form-bgbtn"></div>
+                            <button class="login100-form-btn" type="submit">
+                                Login
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const showPass = document.querySelector('.btn-show-pass');
+        const passwordInput = document.querySelector('input[name="password"]');
+        let showPassword = false;
+    
+        showPass.addEventListener('click', function() {
+            if (showPassword) {
+                passwordInput.type = 'password';
+                showPass.innerHTML = '<i class="zmdi zmdi-eye"></i>';
+            } else {
+                passwordInput.type = 'text';
+                showPass.innerHTML = '<i class="zmdi zmdi-eye-off"></i>';
+            }
+            showPassword = !showPassword;
+        });
+    </script>
+
+</body>
+</html>

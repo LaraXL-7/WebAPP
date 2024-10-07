@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Movimiento de Herramienta</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/nuevo_movimiento_material.css') }}">
+    <script>
+        function toggleTrabajadorField() {
+            var tipo = document.getElementById("tipo").value;
+            var trabajadorField = document.getElementById("trabajadorField");
+            if (tipo === "salida") {
+                trabajadorField.style.display = "block";
+            } else {
+                trabajadorField.style.display = "none";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h3>Inventario</h3>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="{{ url_for('admin_dashboard') }}">Dashboard Principal</a></li>
+                <li><a href="{{ url_for('material_dashboard') }}">Panel de Material</a></li>
+                <li><a href="{{ url_for('herramienta_dashboard') }}" class="active">Panel de Herramientas</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header>
+                <h2>Registrar Movimiento de Herramienta</h2>
+            </header>
+            <div class="form-container">
+                <form method="POST" class="material-form">
+                    <div class="input-group">
+                        <label for="herramienta_id">Herramienta</label>
+                        <select name="herramienta_id" id="herramienta_id" required>
+                            <option value="">Seleccione una herramienta</option>
+                            {% for herramienta in herramientas %}
+                            <option value="{{ herramienta.id }}">{{ herramienta.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="tipo">Tipo de Movimiento</label>
+                        <select name="tipo" id="tipo" onchange="toggleTrabajadorField()" required>
+                            <option value="entrada">Entrada</option>
+                            <option value="salida">Salida</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group" id="trabajadorField" style="display:none;">
+                        <label for="trabajador">Nombre del Trabajador</label>
+                        <input type="text" id="trabajador" name="trabajador" placeholder="Nombre del Trabajador">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="cantidad">Cantidad</label>
+                        <input type="number" id="cantidad" name="cantidad" placeholder="Cantidad" required>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Registrar Movimiento</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

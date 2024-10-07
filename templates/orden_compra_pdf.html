@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orden de Compra</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h2>Orden de Compra</h2>
+    <p><strong>Número de Orden:</strong> {{ numero }}</p>
+    <p><strong>Fecha:</strong> {{ fecha }}</p>
+    <p><strong>Contacto:</strong> {{ contacto }}</p>
+    <p><strong>RFC:</strong> {{ rfc }}</p>
+    <p><strong>Condición:</strong> {{ condicion }}</p>
+
+    <h4>Productos</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Importe</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for producto, cantidad, precio, total in zip(productos, cantidades, precios, totales) %}
+            <tr>
+                <td>{{ producto }}</td>
+                <td>{{ cantidad }}</td>
+                <td>{{ precio }}</td>
+                <td>{{ total }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

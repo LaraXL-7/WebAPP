@@ -1,0 +1,258 @@
+.form-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.material-form .input-group {
+    margin-bottom: 20px;
+}
+
+.material-form .input-group label {
+    font-size: 16px;
+    color: #333;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.material-form .input-group input,
+.material-form .input-group select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    color: #555;
+    box-sizing: border-box;
+}
+
+.material-form .input-group input:focus,
+.material-form .input-group select:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 15px;
+    background-color: #21d4fd;
+    background-image: linear-gradient(45deg, #21d4fd, #b721ff);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.btn-submit:hover {
+    background-color: #1abc9c;
+}
+
+
+
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.container {
+    display: flex;
+}
+
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #34495e;
+    color: #fff;
+    padding: 20px;
+}
+
+.sidebar-header {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.sidebar-menu {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar-menu li {
+    margin: 20px 0;
+}
+
+.sidebar-menu li a {
+    color: #bdc3c7;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar-menu li a:hover,
+.sidebar-menu li a.active {
+    background-color: #1abc9c;
+    color: #fff;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+header {
+    margin-bottom: 30px;
+}
+
+header h2 {
+    font-size: 28px;
+    color: #333;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-content h3 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.card-content p {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.card-content .green {
+    color: #2ecc71;
+}
+
+.card-content .red {
+    color: #e74c3c;
+}
+
+
+.table-container {
+    margin-top: 30px;
+}
+
+.material-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+}
+
+.material-table thead tr {
+    background-color: #34495e;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+.material-table th, .material-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.material-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.material-table tbody tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+.material-table tbody tr td a {
+    color: #3498db;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.material-table tbody tr td a:hover {
+    background-color: #2980b9;
+    color: #ffffff;
+}
+
+
+.form-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.material-form .input-group {
+    margin-bottom: 20px;
+}
+
+.material-form .input-group label {
+    font-size: 16px;
+    color: #333;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.material-form .input-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    color: #555;
+    box-sizing: border-box;
+}
+
+.material-form .input-group input:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 15px;
+    background-color: #21d4fd;
+    background-image: linear-gradient(45deg,  #21d4fd, #355263);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.btn-submit:hover {
+    background-color: #1abc9c;
+}

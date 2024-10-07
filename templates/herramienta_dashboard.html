@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard de Herramienta</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/material_dashboard.css') }}"
+    />
+
+    <!-- jsPDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+      /* Estilos para los botones */
+      .btn-pdf,
+      .btn-clear,
+      .btn-search {
+        display: inline-block;
+        padding: 8px 15px;
+        background-color: #4caf50;
+        color: white;
+        text-align: center;
+        font-size: 14px;
+        border-radius: 5px;
+        text-decoration: none;
+        border: none;
+        transition: background-color 0.3s ease;
+        margin-left: 5px;
+      }
+
+      .btn-pdf:hover,
+      .btn-clear:hover,
+      .btn-search:hover {
+        background-color: #45a049;
+        cursor: pointer;
+      }
+
+      /* Flexbox para organizar la barra de búsqueda y los botones */
+      .header-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      /* Flexbox para la barra de búsqueda y los botones en una línea horizontal */
+      .search-bar-container {
+        display: flex;
+        justify-content: flex-start;
+        gap: 10px;
+        align-items: center;
+      }
+
+      /* Estilos para la barra de búsqueda */
+      .search-bar input[type="text"] {
+        padding: 10px;
+        font-size: 14px;
+        width: 250px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      /* Botones en la segunda fila */
+      .action-buttons {
+        display: flex;
+        justify-content: flex-start;
+        gap: 10px;
+      }
+
+      /* Paginación */
+      .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+      }
+
+      .pagination a {
+        margin: 0 5px;
+        padding: 8px 12px;
+        background-color: #4caf50;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+
+      .pagination a:hover {
+        background-color: #45a049;
+      }
+
+      .pagination .disabled {
+        background-color: #ccc;
+        pointer-events: none;
+      }
+
+      .pagination .active {
+        background-color: #45a049;
+        font-weight: bold;
+        pointer-events: none;
+      }
+
+      /* Ajustes para pantallas pequeñas */
+      @media screen and (max-width: 768px) {
+        .search-bar-container,
+        .action-buttons {
+          flex-direction: column;
+        }
+
+        .search-bar input[type="text"] {
+          width: 100%;
+        }
+      }
+
+      .table-container {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <nav class="sidebar">
+        <div class="sidebar-header">
+          <h3>Inventario</h3>
+        </div>
+        <ul class="sidebar-menu">
+          <li>
+            <a href="{{ url_for('admin_dashboard') }}">Dashboard Principal</a>
+          </li>
+          <li>
+            <a href="{{ url_for('material_dashboard') }}">Panel de Material</a>
+          </li>
+          <li>
+            <a href="{{ url_for('herramienta_dashboard') }}" class="active"
+              >Panel de Herramientas</a
+            >
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <header>
+          <h2>Panel de Herramienta</h2>
+        </header>
+
+        <!-- Contenedor de acciones -->
+        <div class="header-actions">
+          <!-- Contenedor de la barra de búsqueda y botones de búsqueda y limpiar -->
+          <div class="search-bar-container">
+            <form
+              class="search-bar"
+              method="GET"
+              action="{{ url_for('buscar_herramienta_asignada') }}"
+            >
+              <input
+                type="text"
+                name="search"
+                placeholder="Buscar por persona o nombre de la herramienta..."
+                value="{{ search_query or '' }}"
+                required
+              />
+              <button class="btn-search" type="submit">Buscar</button>
+            </form>
+            <button
+              class="btn-clear"
+              onclick="window.location.href='{{ url_for('herramienta_dashboard') }}'"
+            >
+              Limpiar Búsqueda
+            </button>
+          </div>
+
+          <style>
+            .action-buttons {
+              float: right;
+            }
+          </style>
+          <!-- Botones adicionales: Descargar PDF y Agregar Nueva Herramienta -->
+          <div class="action-buttons">
+            <button class="btn-pdf" onclick="downloadPDF()">
+              Descargar Tabla en PDF
+            </button>
+            <a class="btn-pdf" href="{{ url_for('nuevo_herramienta') }}"
+              >Agregar Nueva Herramienta</a
+            >
+
+            <!-- Botón para Hacer Requisición -->
+            <div class="action-buttons">
+              <a class="btn-pdf" href="{{ url_for('nueva_requisicion') }}"
+                >Hacer Requisición</a
+              >
+            </div>
+
+            <div class="action-buttons">
+              <!-- Botón para generar Orden de Compra -->
+              <a class="btn-pdf" href="{{ url_for('nueva_orden_compra') }}"
+                >Generar Orden de Compra</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabla de herramientas -->
+        <div class="table-container">
+          <style>
+            /* Estilo para el modal */
+            .modal {
+              display: none; /* Oculto por defecto */
+              position: fixed;
+              z-index: 1; /* Se coloca por encima de otros elementos */
+              left: 0;
+              top: 0;
+              width: 100%;
+              height: 100%;
+              overflow: auto; /* Habilita el scroll si es necesario */
+              background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+            }
+
+            .modal-content {
+              background-color: #fefefe;
+              margin: 15% auto;
+              padding: 20px;
+              border: 1px solid #888;
+              width: 300px; /* Ancho del modal */
+              border-radius: 5px;
+            }
+
+            /* Botón para cerrar el modal */
+            .close {
+              color: #aaa;
+              float: right;
+              font-size: 28px;
+              font-weight: bold;
+              cursor: pointer;
+            }
+
+            .close:hover,
+            .close:focus {
+              color: black;
+              text-decoration: none;
+              cursor: pointer;
+            }
+
+            /* Botones de acción en la tabla */
+            .btn-action {
+              padding: 5px 10px;
+              font-size: 12px;
+              background-color: #007bff;
+              color: white;
+              border: none;
+              border-radius: 3px;
+              cursor: pointer;
+              transition: background-color 0.3s ease;
+              margin-top: 5px;
+            }
+
+            .btn-action:hover {
+              background-color: #0056b3;
+            }
+
+            .btn-secondary {
+              background-color: #6c757d;
+            }
+
+            .btn-secondary:hover {
+              background-color: #5a6268;
+            }
+
+            /* Estilos de editar y eliminar como botones */
+            .btn-edit,
+            .btn-delete {
+              padding: 5px 10px;
+              font-size: 12px;
+              color: white;
+              border-radius: 3px;
+            }
+
+            .btn-edit {
+              background-color: #28a745;
+            }
+
+            .btn-edit:hover {
+              background-color: #218838;
+            }
+
+            .btn-delete {
+              background-color: #dc3545;
+            }
+
+            .btn-delete:hover {
+              background-color: #c82333;
+            }
+          </style>
+
+          <table class="material-table" id="herramientasTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre de la Herramienta</th>
+                <th>Vida Útil</th>
+                <th>Unidad</th>
+                <th>Cantidad</th>
+                <th>Proyecto</th>
+                <th>Área de Colocación</th>
+                <th>Persona Asignada</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for herramienta in herramientas.items %}
+              <tr>
+                <td>{{ herramienta.id }}</td>
+                <td>{{ herramienta.nombre }}</td>
+                <td>{{ herramienta.vida_util }}</td>
+                <td>{{ herramienta.unidad }}</td>
+                <td>{{ herramienta.cantidad }}</td>
+                <td>{{ herramienta.proyecto }}</td>
+                <td>{{ herramienta.area_colocacion }}</td>
+                <td>{{ herramienta.persona_asignada }}</td>
+                <td>
+                  <!-- Botones para editar y eliminar -->
+                  <a
+                    href="{{ url_for('editar_herramienta', id=herramienta.id) }}"
+                    class="btn-edit"
+                    >Editar</a
+                  >
+                  <a
+                    href="{{ url_for('eliminar_herramienta', id=herramienta.id) }}"
+                    class="btn-delete"
+                    onclick="return confirm('¿Estás seguro de que deseas eliminar esta herramienta?')"
+                    >Eliminar</a
+                  >
+
+                  <!-- Botones para abrir los modales de añadir y retirar -->
+                  <button
+                    class="btn-action"
+                    onclick="openModal('modal-add-{{ herramienta.id }}')"
+                  >
+                    Añadir
+                  </button>
+                  <button
+                    class="btn-action btn-secondary"
+                    onclick="openModal('modal-remove-{{ herramienta.id }}')"
+                  >
+                    Retirar
+                  </button>
+
+                  <!-- Modal para Añadir herramientas -->
+                  <div id="modal-add-{{ herramienta.id }}" class="modal">
+                    <div class="modal-content">
+                      <span
+                        class="close"
+                        onclick="closeModal('modal-add-{{ herramienta.id }}')"
+                        >&times;</span
+                      >
+                      <h3>Añadir Herramientas</h3>
+                      <form
+                        action="{{ url_for('entrada_herramienta', herramienta_id=herramienta.id) }}"
+                        method="POST"
+                      >
+                        <input
+                          type="number"
+                          name="cantidad_entrada"
+                          min="1"
+                          required
+                          placeholder="Cantidad"
+                        />
+                        <input
+                          type="text"
+                          name="proyecto_asignado"
+                          required
+                          placeholder="Proyecto"
+                        />
+                        <button type="submit">Añadir</button>
+                      </form>
+                    </div>
+                  </div>
+
+                  <!-- Modal para Retirar herramientas -->
+                  <div id="modal-remove-{{ herramienta.id }}" class="modal">
+                    <div class="modal-content">
+                      <span
+                        class="close"
+                        onclick="closeModal('modal-remove-{{ herramienta.id }}')"
+                        >&times;</span
+                      >
+                      <h3>Retirar Herramientas</h3>
+                      <form
+                        action="{{ url_for('salida_herramienta', herramienta_id=herramienta.id) }}"
+                        method="POST"
+                      >
+                        <input
+                          type="number"
+                          name="cantidad_salida"
+                          min="1"
+                          max="{{ herramienta.cantidad }}"
+                          required
+                          placeholder="Cantidad"
+                        />
+                        <input
+                          type="text"
+                          name="persona_asignada"
+                          required
+                          placeholder="Persona Asignada"
+                        />
+                        <input
+                          type="text"
+                          name="proyecto_asignado"
+                          required
+                          placeholder="Proyecto"
+                        />
+                        <button type="submit">Retirar</button>
+                      </form>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+          <script>
+            // Función para abrir el modal
+            function openModal(modalId) {
+              document.getElementById(modalId).style.display = "block";
+            }
+
+            // Función para cerrar el modal
+            function closeModal(modalId) {
+              document.getElementById(modalId).style.display = "none";
+            }
+
+            // Cierra el modal si el usuario hace clic fuera del modal
+            window.onclick = function (event) {
+              const modals = document.getElementsByClassName("modal");
+              for (let i = 0; i < modals.length; i++) {
+                if (event.target == modals[i]) {
+                  modals[i].style.display = "none";
+                }
+              }
+            };
+          </script>
+        </div>
+
+        <!-- Paginación con límites de 10 páginas -->
+        <div class="pagination">
+          {% if herramientas.has_prev %}
+          <a
+            href="{{ url_for('buscar_herramienta_asignada', page=herramientas.prev_num, search=search_query) }}"
+            >Anterior</a
+          >
+          {% endif %}
+
+          <!-- Renderizar los números de página -->
+          {% for p in range(start_page, end_page + 1) %}
+          <a
+            href="{{ url_for('buscar_herramienta_asignada', page=p, search=search_query) }}"
+            class="{{ 'active' if p == page else '' }}"
+          >
+            {{ p }}
+          </a>
+          {% endfor %} {% if herramientas.has_next %}
+          <a
+            href="{{ url_for('buscar_herramienta_asignada', page=herramientas.next_num, search=search_query) }}"
+            >Siguiente</a
+          >
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function downloadPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Obtener el valor de búsqueda actual (si existe)
+        const searchQuery = document.querySelector(
+          'input[name="search"]'
+        ).value;
+
+        // URL del logo en la carpeta static/images
+        const logoUrl =
+          "{{ url_for('static', filename='images/Logo-DIE1.png') }}";
+
+        // Cargar la imagen del logo
+        const img = new Image();
+        img.src = logoUrl;
+
+        img.onload = function () {
+          const canvas = document.createElement("canvas");
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0);
+          const logoBase64 = canvas.toDataURL("image/png");
+
+          doc.addImage(logoBase64, "PNG", 10, 10, 30, 30);
+          doc.setFontSize(16);
+          doc.text("Tabla de Herramientas", 10, 50);
+
+          // Realiza una petición AJAX para obtener los datos filtrados
+          fetch(
+            `/obtener_todas_herramientas?search=${encodeURIComponent(
+              searchQuery
+            )}`
+          )
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Error en la solicitud al servidor");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              let rows = [];
+
+              // Convertir los datos obtenidos en un formato para autoTable
+              data.forEach((herramienta) => {
+                rows.push([
+                  herramienta.id,
+                  herramienta.nombre,
+                  herramienta.vida_util,
+                  herramienta.unidad,
+                  herramienta.cantidad,
+                  herramienta.proyecto,
+                  herramienta.area_colocacion,
+                  herramienta.persona_asignada,
+                ]);
+              });
+
+              // Añadir la tabla completa al PDF
+              doc.autoTable({
+                head: [
+                  [
+                    "ID",
+                    "Nombre",
+                    "Vida Útil",
+                    "Unidad",
+                    "Cantidad",
+                    "Proyecto",
+                    "Área Colocación",
+                    "Persona Asignada",
+                  ],
+                ],
+                body: rows,
+                startY: 60,
+              });
+
+              // Guardar el PDF
+              doc.save("herramientas_con_logo.pdf");
+            })
+            .catch((error) => {
+              console.error(
+                "Error al obtener los datos o generar el PDF:",
+                error
+              );
+            });
+        };
+      }
+    </script>
+
+    <!-- autoTable Plugin for jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+  </body>
+</html>

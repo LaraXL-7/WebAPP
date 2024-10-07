@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Material</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/material_dashboard.css') }}">
+
+    <!-- Incluir la librería jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+
+    <style>
+        /* Estilos para el botón de descarga PDF */
+        .btn-pdf {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-pdf:hover {
+            background-color: #45a049;
+            cursor: pointer;
+        }
+
+        /* Ajustes adicionales para alineación */
+        .pdf-btn-container {
+            margin-bottom: 20px;
+        }
+    </style>
+
+    <script>
+        function exportToPDF() {
+            var { jsPDF } = window.jspdf;
+            var doc = new jsPDF();
+
+            // Agregar título al PDF
+            doc.text("Tabla de Materiales", 20, 10);
+
+            // Obtener la tabla
+            var elem = document.querySelector('.material-table');
+
+            // Agregar la tabla al PDF utilizando autoTable
+            doc.autoTable({
+                html: elem,
+                startY: 20,
+                theme: 'grid'
+            });
+
+            // Descargar el archivo PDF
+            doc.save('tabla_materiales.pdf');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h3>Inventario</h3>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="{{ url_for('admin_dashboard') }}">Dashboard Principal</a></li>
+                <li><a href="{{ url_for('material_dashboard') }}" class="active">Panel de Material</a></li>
+                <li><a href="{{ url_for('herramienta_dashboard') }}">Panel de Herramientas</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header>
+                <h2>Panel de Material</h2>
+            </header>
+
+            <!-- Botón para exportar la tabla a PDF -->
+            <div class="pdf-btn-container">
+                <button class="btn-pdf" onclick="exportToPDF()">Exportar Tabla a PDF</button>
+            </div>
+
+            <div class="cards">
+                <div class="card">
+                    <div class="card-content">
+                        <a href="{{ url_for('nuevo_material') }}">Agregar Nuevo Material</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <a href="{{ url_for('nuevo_movimiento_material') }}">Registrar Movimiento de Material</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <a href="{{ url_for('buscar_material') }}">Buscar Material por Trabajador</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de materiales -->
+            <div class="table-container">
+                <table class="material-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre del Material</th>
+                            <th>Unidad</th>
+                            <th>Cantidad</th>
+                            <th>Proyecto</th>
+                            <th>Área de Colocación</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for material in materiales %}
+                        <tr>
+                            <td>{{ material.id }}</td>
+                            <td>{{ material.nombre }}</td>
+                            <td>{{ material.unidad }}</td>
+                            <td>{{ material.cantidad }}</td>
+                            <td>{{ material.proyecto }}</td>
+                            <td>{{ material.area_colocacion }}</td>
+                            <td>
+                                <a href="{{ url_for('editar_material', id=material.id) }}">Editar</a>
+                                <a href="{{ url_for('eliminar_material', id=material.id) }}">Eliminar</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!-- /inventario/templates/user_dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+</head>
+<body>
+    <h2>Panel de Usuario</h2>
+    <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre de la Herramienta</th>
+                <th>Vida Útil</th>
+                <th>Unidad</th>
+                <th>Cantidad</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for producto in productos %}
+            <tr>
+                <td>{{ producto.id }}</td>
+                <td>{{ producto.nombre }}</td>
+                <td>{{ producto.vida_util }}</td>
+                <td>{{ producto.unidad }}</td>
+                <td>{{ producto.cantidad }}</td>
+                <td>{{ producto.descripcion }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de Búsqueda de Material</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/resultado_busqieda_material.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h3>Inventario</h3>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="{{ url_for('admin_dashboard') }}">Dashboard Principal</a></li>
+                <li><a href="{{ url_for('material_dashboard') }}">Panel de Material</a></li>
+                <li><a href="{{ url_for('herramienta_dashboard') }}">Panel de Herramientas</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header>
+                <h2>Material asignado a {{ trabajador }}</h2>
+            </header>
+            <div class="table-container">
+                {% if movimientos %}
+                    <table class="material-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre del Material</th>
+                                <th>Cantidad</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for movimiento in movimientos %}
+                                <tr>
+                                    <td>{{ movimiento.material.nombre }}</td>
+                                    <td>{{ movimiento.cantidad }}</td>
+                                    <td>{{ movimiento.fecha }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No se encontraron materiales asignados a {{ trabajador }}.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

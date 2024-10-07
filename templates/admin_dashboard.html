@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <!-- Incluir archivos CSS -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/admin.css') }}"
+    />
+
+    <style>
+      body,
+      html {
+        font-family: Poppins-Regular, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+
+      .dashboard-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        padding: 20px;
+        text-align: center;
+      }
+
+      h2 {
+        font-family: Poppins-Bold;
+        font-size: 70px;
+        color: #333;
+        margin-bottom: 50px;
+      }
+
+      .btn-container {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+      }
+
+      .dashboard-btn {
+        font-family: Poppins-Medium;
+        font-size: 18px;
+        text-transform: uppercase;
+        color: #fff; /* Asegura que el color del texto sea blanco */
+        background-color: #21d4fd;
+        background-image: linear-gradient(45deg, #21d4fd, #355263);
+        padding: 15px 30px;
+        border: none;
+        border-radius: 25px;
+        text-decoration: none;
+        transition: transform 0.2s ease-in-out, color 0s; /* Evita la transición de color */
+      }
+
+      .dashboard-btn:hover {
+        transform: scale(1.05); /* Efecto de zoom al hacer hover */
+        color: #fff; /* Mantiene el color del texto en blanco durante el hover */
+        /* No cambies el color del fondo ni del texto */
+      }
+
+      .logout-btn {
+        margin-top: 50px;
+        font-family: Poppins-Regular;
+        font-size: 16px;
+        color: #666;
+        text-decoration: none;
+      }
+
+      .logout-btn:hover {
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-container">
+        <!-- Texto en dos líneas -->
+        <div class="navbar-text">
+          <span class="line-1">Gerencia Inmobiliaria</span>
+          <span class="line-2">Dashboard</span>
+        </div>
+
+        <!-- Opciones de Usuario cerrar sesión -->
+        <div class="navbar-user">
+          <a class="btn-logout" href="{{ url_for('logout') }}">Cerrar Sesión</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="dashboard-container">
+      <a href="#" class="panel-logo">
+        <img
+          src="{{ url_for('static', filename='images/Logo-DIE1.png') }}"
+          alt="Logo de la Empresa"
+      /></a>
+      <h2 id="admin-panel-title">Panel de Administración</h2>
+
+      <!-- Botones para elegir entre Material y Herramienta -->
+      <div class="btn-container">
+        <a class="dashboard-btn" href="{{ url_for('material_dashboard') }}"
+          >Material</a
+        >
+        <a class="dashboard-btn" href="{{ url_for('herramienta_dashboard') }}"
+          >Herramienta</a
+        >
+      </div>
+    </div>
+  </body>
+</html>

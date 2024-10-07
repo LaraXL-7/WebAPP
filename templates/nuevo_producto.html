@@ -1,0 +1,20 @@
+<!-- /inventario/templates/nuevo_producto.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo Producto</title>
+</head>
+<body>
+    <h2>Agregar Nuevo Producto</h2>
+    <form method="POST">
+        <input type="text" name="nombre" placeholder="Nombre de la Herramienta" required>
+        <input type="number" name="vida_util" placeholder="Vida Útil" required>
+        <input type="text" name="unidad" placeholder="Unidad (pieza, metro, etc.)" required>
+        <input type="number" name="cantidad" placeholder="Cantidad" required>
+        <textarea name="descripcion" placeholder="Descripción"></textarea>
+        <button type="submit">Agregar Producto</button>
+    </form>
+</body>
+</html>

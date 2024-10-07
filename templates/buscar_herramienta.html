@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Herramienta por Trabajador</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/buscar_material.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h3>Inventario</h3>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="{{ url_for('admin_dashboard') }}">Dashboard Principal</a></li>
+                <li><a href="{{ url_for('material_dashboard') }}">Panel de Material</a></li>
+                <li><a href="{{ url_for('herramienta_dashboard') }}" class="active">Panel de Herramientas</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header>
+                <h2>Buscar Herramienta por Trabajador</h2>
+            </header>
+            <div class="form-container">
+                <form method="POST" class="material-form">
+                    <div class="input-group">
+                        <label for="trabajador">Nombre del Trabajador</label>
+                        <input type="text" id="trabajador" name="trabajador" placeholder="Nombre del Trabajador" required>
+                    </div>
+                    <button type="submit" class="btn-submit">Buscar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

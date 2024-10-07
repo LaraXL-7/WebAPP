@@ -1,0 +1,20 @@
+<!-- Mostrar las requisiciones existentes -->
+<div class="requisiciones-container">
+    <h3>Requisiciones Realizadas</h3>
+    <table class="material-table">
+        <thead>
+            <tr>
+                <th>Nombre del Material/Herramienta</th>
+                <th>Cantidad Requerida</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for requisicion in requisiciones %}
+            <tr>
+                <td>{{ requisicion[0] }}</td>
+                <td>{{ requisicion[1] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
