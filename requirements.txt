@@ -1,5 +1,4 @@
 pip>=24.0
-python-3.8.13
 alembic==1.13.3
 attrs==24.2.0
 Automat==24.8.1
